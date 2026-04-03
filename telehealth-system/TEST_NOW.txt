@@ -1,0 +1,92 @@
+╔══════════════════════════════════════════════════════════════╗
+║              🚨 VIDEO CALL FIX - TEST NOW 🚨                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+YOUR PROBLEM:
+✅ Camera/mic working (logs show this)
+❌ Users can't see each other
+
+LIKELY CAUSE:
+→ Users are joining different rooms
+→ OR network is blocking the connection
+
+═══════════════════════════════════════════════════════════════
+
+🎯 SIMPLE TEST (DO THIS FIRST):
+
+1. Open: http://localhost:5173/simple-test
+
+2. Window 1:
+   - Enter name: "Patient"
+   - Click "Copy Room ID"
+   - Click "Join Room"
+   - Allow camera/mic
+   - Should see: "⚠️ You are alone in this room"
+
+3. Window 2 (Incognito mode):
+   - Enter name: "Doctor"
+   - PASTE the same Room ID
+   - Click "Join Room"
+   - Allow camera/mic
+
+4. EXPECTED RESULT:
+   ✅ Window 1: "🎉 SOMEONE JOINED!"
+   ✅ Window 2: "✅ Connected with 1 other user(s)!"
+   ✅ Both see each other's video
+
+═══════════════════════════════════════════════════════════════
+
+📋 CHECK BROWSER CONSOLE (F12):
+
+You should see:
+✅ 🚀 Initializing Jitsi with room: test123
+✅ ✅ User joined the conference
+✅ 🎉 NEW PARTICIPANT JOINED
+✅ 👥 Total participants: 2
+
+If you DON'T see these → Network/firewall issue
+
+═══════════════════════════════════════════════════════════════
+
+🔍 WHAT TO REPORT BACK:
+
+1. Do both users see "YOU JOINED THE ROOM"? (Yes/No)
+2. Does either user see "SOMEONE JOINED"? (Yes/No)
+3. What's the participant count shown? (Number)
+4. Any errors in browser console? (Copy/paste)
+5. Are you using the EXACT same room ID? (Yes/No)
+
+═══════════════════════════════════════════════════════════════
+
+⚡ QUICK FIXES:
+
+❌ "Can't see other person"
+   → Make sure BOTH use the EXACT same room ID
+   → Use "Copy Room ID" button to ensure match
+
+❌ "Stuck on connecting"
+   → Try: https://meet.jit.si/TestRoom123
+   → If that doesn't work → Network blocks Jitsi
+   → Disable VPN, try mobile hotspot
+
+❌ "No video preview"
+   → Close other apps using camera (Zoom, Teams)
+   → Try different browser (Chrome recommended)
+
+═══════════════════════════════════════════════════════════════
+
+📚 MORE HELP:
+
+- Full guide: CONNECTION_TEST_GUIDE.md
+- Troubleshooting: VIDEO_TROUBLESHOOTING.md
+- Quick start: HOW_TO_TEST_VIDEO.md
+
+═══════════════════════════════════════════════════════════════
+
+🚀 SERVERS RUNNING:
+✓ Frontend: http://localhost:5173
+✓ Backend:  http://localhost:5000
+
+═══════════════════════════════════════════════════════════════
+
+GO TEST NOW: http://localhost:5173/simple-test

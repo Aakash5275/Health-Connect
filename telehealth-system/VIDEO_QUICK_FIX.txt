@@ -1,0 +1,64 @@
+╔══════════════════════════════════════════════════════════════╗
+║          VIDEO CALL NOT WORKING? - QUICK FIX                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+STEP 1: Open Debug Page
+→ http://localhost:5173/debug-video/test123
+
+STEP 2: Grant Permissions
+→ Click "Allow" when browser asks for camera/microphone
+→ If blocked, click camera icon in address bar → Allow
+
+STEP 3: Check Results
+✓ Green checkmarks = Working!
+✗ Red errors = See troubleshooting below
+
+═══════════════════════════════════════════════════════════════
+
+COMMON FIXES:
+
+❌ "Camera/Microphone Blocked"
+   → Click camera icon in browser address bar
+   → Select "Always allow"
+   → Refresh page
+
+❌ "Can't see other person"
+   → Both users MUST use SAME room ID
+   → Example: both use /consultation/room123
+
+❌ "Stuck on connecting"
+   → Check internet connection
+   → Disable VPN
+   → Try different browser (Chrome recommended)
+
+❌ "No video preview"
+   → Close other apps using camera (Zoom, Teams, etc.)
+   → Try incognito mode
+   → Restart browser
+
+═══════════════════════════════════════════════════════════════
+
+TEST WITH 2 USERS:
+
+Window 1: http://localhost:5173/consultation/room123
+Window 2: http://localhost:5173/consultation/room123
+          (Use incognito mode or different browser)
+
+Both grant permissions → Should see each other!
+
+═══════════════════════════════════════════════════════════════
+
+STILL NOT WORKING?
+
+1. Read: VIDEO_TROUBLESHOOTING.md (detailed guide)
+2. Read: HOW_TO_TEST_VIDEO.md (step-by-step)
+3. Test Jitsi directly: https://meet.jit.si/TestRoom123
+   (If this doesn't work, issue is your network/browser)
+
+═══════════════════════════════════════════════════════════════
+
+SERVERS RUNNING:
+✓ Frontend: http://localhost:5173
+✓ Backend:  http://localhost:5000
+
+═══════════════════════════════════════════════════════════════

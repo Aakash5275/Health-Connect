@@ -1,0 +1,268 @@
+╔══════════════════════════════════════════════════════════════╗
+║         PRODUCTION DEPLOYMENT CHECKLIST                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+PRE-DEPLOYMENT
+═══════════════════════════════════════════════════════════════
+
+Environment Setup:
+□ Create production Firebase project
+□ Generate Firebase service account key
+□ Get Google Gemini API key
+□ Register domain name
+□ Set up SSL certificate
+□ Choose hosting platform (Vercel/Railway/AWS)
+
+Code Preparation:
+□ Remove all test routes (✓ DONE)
+□ Update environment variables for production
+□ Test build locally: npm run build:prod
+□ Run security audit: npm audit
+□ Update dependencies: npm update
+□ Review and update CORS settings
+□ Set up error logging
+
+Security:
+□ All API keys in environment variables (not in code)
+□ Firebase security rules configured
+□ Rate limiting enabled on backend
+□ Input validation on all endpoints
+□ HTTPS enforced
+□ Secure headers configured (nginx.conf)
+
+Testing:
+□ Test user registration and login
+□ Test appointment booking flow
+□ Test video calls (CRITICAL - requires HTTPS)
+□ Test on mobile devices
+□ Test symptom checker
+□ Test health records CRUD
+□ Test medicine finder
+□ Load testing (optional)
+
+═══════════════════════════════════════════════════════════════
+
+DEPLOYMENT STEPS
+═══════════════════════════════════════════════════════════════
+
+Frontend (Vercel):
+□ Install Vercel CLI: npm install -g vercel
+□ Build: cd frontend && npm run build:prod
+□ Deploy: vercel --prod
+□ Add environment variables in Vercel dashboard
+□ Configure custom domain
+□ Enable HTTPS redirect
+□ Test deployment: https://your-domain.com
+
+Backend (Railway):
+□ Create Railway account
+□ Connect GitHub repository
+□ Set root directory: telehealth-system/server
+□ Add environment variables:
+  □ PORT=5000
+  □ NODE_ENV=production
+  □ FRONTEND_URL=https://your-frontend-domain.com
+  □ GEMINI_API_KEY=your_key
+□ Upload Firebase service account JSON
+□ Deploy and get backend URL
+□ Update VITE_API_URL in frontend with backend URL
+□ Redeploy frontend with updated API URL
+
+Alternative - Docker:
+□ Build images: docker-compose build
+□ Test locally: docker-compose up
+□ Push to registry: docker push
+□ Deploy to server
+□ Configure reverse proxy (nginx)
+□ Set up SSL with Let's Encrypt
+
+═══════════════════════════════════════════════════════════════
+
+POST-DEPLOYMENT
+═══════════════════════════════════════════════════════════════
+
+Configuration:
+□ Update Firebase security rules
+□ Configure Firebase storage rules
+□ Set up CORS for production domain
+□ Enable Firebase Analytics
+□ Configure caching headers
+□ Set up CDN (optional)
+
+Testing:
+□ Test complete user flow end-to-end
+□ Test video calls from different networks
+□ Test on multiple browsers (Chrome, Firefox, Safari, Edge)
+□ Test on mobile devices (iOS and Android)
+□ Test error scenarios
+□ Verify SSL certificate
+□ Check page load speed
+□ Test PWA installation
+
+Monitoring:
+□ Set up error tracking (Sentry/LogRocket)
+□ Configure uptime monitoring (UptimeRobot)
+□ Enable Firebase Performance Monitoring
+□ Set up log aggregation
+□ Configure alerts for errors
+□ Monitor API usage and costs
+
+Documentation:
+□ Update README with production URLs
+□ Document deployment process
+□ Create runbook for common issues
+□ Document rollback procedure
+□ Update API documentation
+
+Security:
+□ Run security scan
+□ Test authentication flows
+□ Verify data encryption
+□ Check for exposed secrets
+□ Review access controls
+□ Set up backup strategy
+
+═══════════════════════════════════════════════════════════════
+
+VIDEO CALL SPECIFIC
+═══════════════════════════════════════════════════════════════
+
+Critical Requirements:
+□ HTTPS enabled (WebRTC requirement)
+□ SSL certificate valid
+□ No mixed content warnings
+□ Firewall ports open:
+  □ TCP 443 (HTTPS)
+  □ TCP 4443 (Jitsi)
+  □ UDP 10000 (Media)
+
+Testing:
+□ Test video call with 2 users
+□ Test from different networks
+□ Test on mobile devices
+□ Test camera/microphone permissions
+□ Test screen sharing (if enabled)
+□ Verify end-to-end encryption indicator
+□ Test call quality
+□ Test with poor network conditions
+
+Fallback:
+□ Consider self-hosted Jitsi for more control
+□ Have TURN server ready for restrictive networks
+□ Document troubleshooting steps for users
+
+═══════════════════════════════════════════════════════════════
+
+MAINTENANCE PLAN
+═══════════════════════════════════════════════════════════════
+
+Daily:
+□ Monitor error logs
+□ Check uptime status
+□ Review user feedback
+
+Weekly:
+□ Review analytics
+□ Check Firebase usage
+□ Monitor costs
+□ Review security alerts
+
+Monthly:
+□ Update dependencies
+□ Security audit
+□ Performance review
+□ Backup verification
+□ Review and optimize costs
+
+Quarterly:
+□ Major dependency updates
+□ Feature planning
+□ User feedback analysis
+□ Infrastructure review
+
+═══════════════════════════════════════════════════════════════
+
+ROLLBACK PLAN
+═══════════════════════════════════════════════════════════════
+
+If deployment fails:
+□ Keep previous version running
+□ Identify the issue
+□ Fix in development
+□ Test thoroughly
+□ Redeploy
+
+Quick Rollback:
+□ Vercel: Revert to previous deployment in dashboard
+□ Railway: Rollback to previous build
+□ Docker: docker-compose down && docker-compose up -d (old version)
+
+═══════════════════════════════════════════════════════════════
+
+COST MONITORING
+═══════════════════════════════════════════════════════════════
+
+Expected Monthly Costs:
+□ Vercel Pro: $20/month
+□ Railway: $20-50/month
+□ Firebase Blaze: $25-100/month (usage-based)
+□ Domain: $10-15/year
+□ SSL: Free (Let's Encrypt)
+□ Total: ~$65-185/month
+
+Set Alerts:
+□ Firebase usage > 80% of budget
+□ Railway usage > expected
+□ Unusual API call patterns
+□ High error rates
+
+═══════════════════════════════════════════════════════════════
+
+SUPPORT RESOURCES
+═══════════════════════════════════════════════════════════════
+
+Documentation:
+□ DEPLOYMENT_GUIDE.md
+□ PRODUCTION_README.md
+□ VIDEO_TROUBLESHOOTING.md
+□ Firebase Console: https://console.firebase.google.com
+□ Vercel Dashboard: https://vercel.com/dashboard
+□ Railway Dashboard: https://railway.app/dashboard
+
+Testing Tools:
+□ WebRTC Test: https://test.webrtc.org/
+□ SSL Test: https://www.ssllabs.com/ssltest/
+□ Speed Test: https://pagespeed.web.dev/
+□ Mobile Test: https://search.google.com/test/mobile-friendly
+
+═══════════════════════════════════════════════════════════════
+
+FINAL CHECKS
+═══════════════════════════════════════════════════════════════
+
+Before Going Live:
+□ All tests passing
+□ No console errors
+□ SSL certificate valid
+□ Video calls working
+□ Mobile responsive
+□ Fast page load (<3s)
+□ SEO optimized
+□ Analytics tracking
+□ Error monitoring active
+□ Backups configured
+□ Team trained on deployment
+□ Documentation complete
+□ Support plan ready
+
+═══════════════════════════════════════════════════════════════
+
+✅ DEPLOYMENT COMPLETE!
+
+Next Steps:
+1. Monitor for 24 hours
+2. Gather user feedback
+3. Address any issues
+4. Plan next features
+
+═══════════════════════════════════════════════════════════════
