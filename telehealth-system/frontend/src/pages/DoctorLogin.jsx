@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, isDemoFirebase } from '../firebase/firebaseConfig';
-import { getUserRoleByUid } from '../services/userRoleService';
+import { checkDoctorExists } from '../services/userRoleService';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Stethoscope, ArrowRight, Lock, Mail } from 'lucide-react';
@@ -41,9 +41,9 @@ export default function DoctorLogin() {
       }
 
       const cred = await signInWithEmailAndPassword(auth, email, password);
-      const role = await getUserRoleByUid(cred.user.uid);
+      const exists = await checkDoctorExists(cred.user.uid);
 
-      if (role !== 'doctor') {
+      if (!exists) {
         await signOut(auth);
         setError('Access denied. This account is not registered as a doctor.');
         localStorage.removeItem('authToken');

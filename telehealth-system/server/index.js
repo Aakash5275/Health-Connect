@@ -18,7 +18,6 @@ import recordsRouter from './routes/records.js';
 import medicinesRouter from './routes/medicines.js';
 import aiRouter from './routes/ai.js';
 import notificationsRouter from './routes/notifications.js';
-import { startAppointmentReminderScheduler } from './services/appointmentReminderService.js';
 
 // Load environment variables
 dotenv.config();
@@ -109,9 +108,6 @@ app.listen(PORT, () => {
   if (lanUrl) {
     logger.info(`Backend network URL: ${lanUrl}`);
   }
-
-  // Start background scheduler for appointment reminders
-  startAppointmentReminderScheduler();
 });
 
 export default app;
