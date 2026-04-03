@@ -54,15 +54,26 @@ export default defineConfig({
             }
           }
         ]
+      },
+      devOptions: {
+        enabled: false  // Disable SW in dev to prevent WebSocket/HMR interference
       }
     })
   ],
   server: {
     port: 5173,
+    strictPort: true,
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5173,
+      clientPort: 5173
+    },
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+        ws: true
       }
     }
   }

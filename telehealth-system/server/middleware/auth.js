@@ -17,6 +17,16 @@ export async function authenticate(req, res, next) {
 
     let decoded;
 
+    // Handle demo tokens for development
+    if (token === 'demo-patient-token' || token === 'demo-doctor-token') {
+      req.user = {
+        uid: token === 'demo-doctor-token' ? 'demo-doctor' : 'demo-patient',
+        role: token === 'demo-doctor-token' ? 'doctor' : 'patient',
+        email: token === 'demo-doctor-token' ? 'demo.doctor@telehealth.com' : 'demo.patient@telehealth.com',
+      };
+      return next();
+    }
+
     // Prefer Firebase ID token verification
     try {
       decoded = await admin.auth().verifyIdToken(token);

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { cn } from '../lib/utils';
-import { 
-  Video, Activity, FileText, Pill, MapPin, AlertCircle, 
+import {
+  Video, Activity, FileText, Pill, MapPin, AlertCircle,
   ChevronRight, Shield, Award, HeartHandshake, Phone, Globe, Star, Users, HeartPulse
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -52,9 +52,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 pt-32 pb-20 max-w-7xl">
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          
+
           {/* Text Content */}
-          <motion.div 
+          <motion.div
             className="flex-1 text-center lg:text-left"
             initial="hidden"
             animate="visible"
@@ -65,18 +65,30 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
               </span>
-              Now serving thousands of villages
+              Now serving thousands of Patients.
             </motion.div>
-            
+
             <motion.h1 variants={fadeIn} className="text-5xl lg:text-7xl font-extrabold text-slate-900 tracking-tight mb-6 leading-[1.1]">
               Healthcare for <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-600 drop-shadow-sm">Every Village</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-600 drop-shadow-sm">Everyone</span>
             </motion.h1>
-            
-            <motion.p variants={fadeIn} className="text-lg text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 text-balance leading-relaxed">
-              SwasthyaConnect bridges the gap between rural communities and premium healthcare. Get instant access to certified doctors, AI diagnostics, and digital prescriptions—even on low bandwidth networks.
+
+            <motion.p
+              variants={fadeIn}
+              className="text-lg text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 text-balance leading-relaxed"
+            >
+              {(() => {
+                const quotes = [
+                  "Eliminating the distance between you and world-class specialists with a seamless digital bridge.",
+                  "Redefining healthcare boundaries with AI-driven precision for every citizen. Deploying advanced diagnostic intelligence to catch health concerns early, regardless of your location.",
+                  "Empowering every life with the future of medicine, from the city to the heartland.Ensuring cutting-edge digital health tools work for everyone, even on the lowest bandwidth networks.",
+                  "Democratizing health with instant access to the care you deserve, anywhere, anytime.Turning high-quality medical attention into a universal right that is available 24/7, across the nation.",
+                  "Premium wellness is no longer a destination—it's a digital connection away. Moving healthcare from a physical waiting room to an immediate, on-demand service in your pocket."
+                ];
+                return quotes[Math.floor(Math.random() * quotes.length)];
+              })()}
             </motion.p>
-            
+
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button size="lg" onClick={() => navigate('/login')} className="group h-14 px-8 text-lg shadow-premium hover:shadow-lg hover:-translate-y-0.5 transition-all">
                 Start Consultation
@@ -105,15 +117,15 @@ export default function Home() {
           </motion.div>
 
           {/* Hero Visual showing floating cards */}
-          <motion.div 
+          <motion.div
             className="flex-1 relative w-full h-[550px] hidden lg:block"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             {/* Main Video Call Card */}
-            <motion.div 
-              animate={{ y: [0, -15, 0] }} 
+            <motion.div
+              animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
               className="absolute top-10 right-10 w-80 bg-white/90 backdrop-blur-xl p-4 rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-20"
             >
@@ -141,8 +153,8 @@ export default function Home() {
             </motion.div>
 
             {/* AI Checker Card */}
-            <motion.div 
-              animate={{ y: [0, 15, 0] }} 
+            <motion.div
+              animate={{ y: [0, 15, 0] }}
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
               className="absolute bottom-20 left-4 w-64 bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-30"
             >
@@ -160,10 +172,10 @@ export default function Home() {
             </motion.div>
 
             {/* Prescription Prompt Card */}
-            <motion.div 
-               animate={{ y: [0, -10, 0] }} 
-               transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 0.5 }}
-               className="absolute top-1/2 -right-6 w-48 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-10"
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 0.5 }}
+              className="absolute top-1/2 -right-6 w-48 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-10"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-amber-50 rounded-md border border-amber-100"><Pill className="w-4 h-4 text-amber-600" /></div>
@@ -171,10 +183,10 @@ export default function Home() {
               </div>
               <div className="space-y-2">
                 <div className="h-1.5 bg-slate-100 rounded-full w-full relative overflow-hidden">
-                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                 </div>
                 <div className="h-1.5 bg-slate-100 rounded-full w-2/3 relative overflow-hidden">
-                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                 </div>
               </div>
             </motion.div>
