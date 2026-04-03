@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, isDemoFirebase } from '../firebase/firebaseConfig';
+import { getUserRoleByUid } from '../services/userRoleService';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { LogIn, ArrowRight, Lock, Mail } from 'lucide-react';
@@ -40,13 +41,27 @@ export default function PatientLogin() {
       }
 
       const cred = await signInWithEmailAndPassword(auth, email, password);
+      const role = await getUserRoleByUid(cred.user.uid);
+
+      if (role !== 'patient') {
+        await signOut(auth);
+        setError('Access denied. This account is not registered as a patient.');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        return;
+      }
+
       const token = await cred.user.getIdToken();
       localStorage.setItem('authToken', token);
       localStorage.setItem('userRole', 'patient');
       navigate('/dashboard');
     } catch (err) {
       console.error('Patient login error:', err);
-      setError('Invalid email or password. Please try again.');
+      if (err.code === 'auth/network-request-failed') {
+        setError('Network error. Please check internet and try again.');
+      } else {
+        setError('Invalid email or password, or role verification failed.');
+      }
     } finally {
       setLoading(false);
     }

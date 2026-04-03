@@ -1,4 +1,5 @@
 import express from 'express';
+import os from 'os';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -16,12 +17,27 @@ import appointmentsRouter from './routes/appointments.js';
 import recordsRouter from './routes/records.js';
 import medicinesRouter from './routes/medicines.js';
 import aiRouter from './routes/ai.js';
+import notificationsRouter from './routes/notifications.js';
+import { startAppointmentReminderScheduler } from './services/appointmentReminderService.js';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+function getLocalNetworkIp() {
+  const interfaces = os.networkInterfaces();
+  for (const values of Object.values(interfaces)) {
+    if (!values) continue;
+    for (const item of values) {
+      if (item.family === 'IPv4' && !item.internal) {
+        return item.address;
+      }
+    }
+  }
+  return null;
+}
 
 // Security & core middleware
 app.use(helmet());
@@ -48,6 +64,7 @@ app.use('/api/appointments', appointmentsRouter);
 app.use('/api/records', recordsRouter);
 app.use('/api/medicines', medicinesRouter);
 app.use('/api', aiRouter);
+app.use('/api/notifications', notificationsRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -81,11 +98,20 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
+  const lanIp = getLocalNetworkIp();
+  const localUrl = `http://localhost:${PORT}`;
+  const lanUrl = lanIp ? `http://${lanIp}:${PORT}` : null;
+
   logger.info(
-    `Rural TeleHealth API server running on http://localhost:${PORT} in ${
-      process.env.NODE_ENV || 'development'
-    } mode`,
+    `Rural TeleHealth API server running in ${process.env.NODE_ENV || 'development'} mode`,
   );
+  logger.info(`Backend local URL: ${localUrl}`);
+  if (lanUrl) {
+    logger.info(`Backend network URL: ${lanUrl}`);
+  }
+
+  // Start background scheduler for appointment reminders
+  startAppointmentReminderScheduler();
 });
 
 export default app;

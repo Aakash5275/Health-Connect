@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, isDemoFirebase } from './firebase/firebaseConfig';
+import { getUserRoleByUid } from './services/userRoleService';
 import { AnimatePresence } from 'framer-motion';
 
 // Pages
@@ -29,37 +30,60 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null); // 'patient' or 'doctor'
+  const [roleResolved, setRoleResolved] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // Primary: Firebase-authenticated user
-      if (currentUser) {
-        setUser(currentUser);
-        const role = localStorage.getItem('userRole') || 'patient';
-        setUserRole(role);
-      } else if (isDemoFirebase) {
-        // Demo fallback: use locally stored fake user if present
-        const storedDemo = localStorage.getItem('demoUser');
-        if (storedDemo) {
-          const demoUser = JSON.parse(storedDemo);
-          setUser(demoUser);
-          const role = localStorage.getItem('userRole') || demoUser.role || 'patient';
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setRoleResolved(false);
+      try {
+        // Primary: Firebase-authenticated user
+        if (currentUser) {
+          setUser(currentUser);
+          let role = localStorage.getItem('userRole');
+
+          const dbRole = await getUserRoleByUid(currentUser.uid);
+          role = dbRole || role;
+
+          if (role) {
+            localStorage.setItem('userRole', role);
+          } else {
+            localStorage.removeItem('userRole');
+          }
           setUserRole(role);
+          setRoleResolved(true);
+        } else if (isDemoFirebase) {
+          // Demo fallback: use locally stored fake user if present
+          const storedDemo = localStorage.getItem('demoUser');
+          if (storedDemo) {
+            const demoUser = JSON.parse(storedDemo);
+            setUser(demoUser);
+            const role = localStorage.getItem('userRole') || demoUser.role || 'patient';
+            setUserRole(role);
+            setRoleResolved(true);
+          } else {
+            setUser(null);
+            setUserRole(null);
+            setRoleResolved(true);
+          }
         } else {
           setUser(null);
           setUserRole(null);
+          setRoleResolved(true);
         }
-      } else {
+      } catch (error) {
+        console.error('Auth state initialization failed:', error);
         setUser(null);
         setUserRole(null);
+        setRoleResolved(true);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  if (loading) {
+  if (loading || (user && !roleResolved)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-brand-background">
         <div className="flex flex-col items-center gap-4">
@@ -71,7 +95,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="min-h-screen bg-brand-background flex flex-col font-sans">
         <Navbar user={user} userRole={userRole} />
         
@@ -84,23 +108,29 @@ function App() {
               {/* Auth Routes */}
               <Route 
                 path="/login" 
-                element={user ? <Navigate to={userRole === 'doctor' ? "/doctor-dashboard" : "/dashboard"} /> : <LoginSelection />} 
+                element={
+                  user
+                    ? userRole
+                      ? <Navigate to={userRole === 'doctor' ? "/doctor-dashboard" : "/dashboard"} />
+                      : <Navigate to="/home" />
+                    : <LoginSelection />
+                } 
               />
               <Route 
                 path="/signup/patient"
-                element={user ? <Navigate to="/dashboard" /> : <PatientSignup />}
+                element={user ? <Navigate to={userRole === 'doctor' ? "/doctor-dashboard" : "/dashboard"} /> : <PatientSignup />}
               />
               <Route 
                 path="/signup/doctor"
-                element={user ? <Navigate to="/doctor-dashboard" /> : <DoctorSignup />}
+                element={user ? <Navigate to={userRole === 'doctor' ? "/doctor-dashboard" : "/dashboard"} /> : <DoctorSignup />}
               />
               <Route 
                 path="/login/patient" 
-                element={user ? <Navigate to="/dashboard" /> : <PatientLogin />} 
+                element={user ? <Navigate to={userRole === 'doctor' ? "/doctor-dashboard" : "/dashboard"} /> : <PatientLogin />} 
               />
               <Route 
                 path="/login/doctor" 
-                element={user ? <Navigate to="/doctor-dashboard" /> : <DoctorLogin />} 
+                element={user ? <Navigate to={userRole === 'doctor' ? "/doctor-dashboard" : "/dashboard"} /> : <DoctorLogin />} 
               />
 
               {/* Protected Patient Routes */}
