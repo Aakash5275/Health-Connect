@@ -25,6 +25,7 @@ import Emergency from './pages/Emergency.jsx';
 // Components
 import Navbar from './components/Navbar.jsx';
 import ProtectedRoute from './components/routing/ProtectedRoute.jsx';
+import SwasthyaBot from './components/Chatbot.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -214,6 +215,7 @@ function App() {
             </Routes>
           </AnimatePresence>
         </main>
+        <SwasthyaBot />
       </div>
     </Router>
   );

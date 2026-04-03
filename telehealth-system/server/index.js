@@ -18,7 +18,6 @@ import recordsRouter from './routes/records.js';
 import medicinesRouter from './routes/medicines.js';
 import aiRouter from './routes/ai.js';
 import notificationsRouter from './routes/notifications.js';
-import { startAppointmentReminderScheduler } from './services/appointmentReminderService.js';
 
 // Load environment variables
 dotenv.config();
@@ -68,9 +67,9 @@ app.use('/api/notifications', notificationsRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'Rural TeleHealth API is running',
+  res.json({
+    status: 'ok',
+    message: 'TeleHealth API is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -78,7 +77,7 @@ app.get('/api/health', (req, res) => {
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
-    name: 'Rural TeleHealth Access System API',
+    name: 'TeleHealth Access System API',
     version: '1.0.0',
     endpoints: {
       users: '/api/users',
@@ -103,15 +102,12 @@ app.listen(PORT, () => {
   const lanUrl = lanIp ? `http://${lanIp}:${PORT}` : null;
 
   logger.info(
-    `Rural TeleHealth API server running in ${process.env.NODE_ENV || 'development'} mode`,
+    `TeleHealth API server running in ${process.env.NODE_ENV || 'development'} mode`,
   );
   logger.info(`Backend local URL: ${localUrl}`);
   if (lanUrl) {
     logger.info(`Backend network URL: ${lanUrl}`);
   }
-
-  // Start background scheduler for appointment reminders
-  startAppointmentReminderScheduler();
 });
 
 export default app;

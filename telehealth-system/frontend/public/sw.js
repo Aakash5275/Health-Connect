@@ -1,4 +1,4 @@
-// Service Worker for Rural TeleHealth PWA
+// Service Worker for TeleHealth PWA
 const CACHE_NAME = 'telehealth-v1';
 const DYNAMIC_CACHE = 'telehealth-dynamic-v1';
 
@@ -62,13 +62,13 @@ self.addEventListener('fetch', (event) => {
 // Cache first strategy
 async function cacheFirstStrategy(request) {
   const cachedResponse = await caches.match(request);
-  
+
   if (cachedResponse) {
     // Return cached response and update cache in background
     fetchAndCache(request);
     return cachedResponse;
   }
-  
+
   return fetchAndCache(request);
 }
 
@@ -76,31 +76,31 @@ async function cacheFirstStrategy(request) {
 async function networkFirstStrategy(request) {
   try {
     const networkResponse = await fetch(request);
-    
+
     // Cache successful responses
     if (networkResponse.ok) {
       const cache = await caches.open(DYNAMIC_CACHE);
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     // Fallback to cache
     const cachedResponse = await caches.match(request);
-    
+
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     // Return offline fallback for API requests
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: 'You are offline. Please check your internet connection.',
-        offline: true 
+        offline: true
       }),
-      { 
+      {
         headers: { 'Content-Type': 'application/json' },
-        status: 503 
+        status: 503
       }
     );
   }
@@ -110,12 +110,12 @@ async function networkFirstStrategy(request) {
 async function fetchAndCache(request) {
   try {
     const networkResponse = await fetch(request);
-    
+
     if (networkResponse.ok) {
       const cache = await caches.open(CACHE_NAME);
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     // Return cached response or offline page
@@ -139,7 +139,7 @@ async function syncAppointments() {
 // Push notifications
 self.addEventListener('push', (event) => {
   const data = event.data?.json() || {};
-  
+
   const options = {
     body: data.body || 'New notification from TeleHealth',
     icon: '/icons/icon-192x192.png',
@@ -154,7 +154,7 @@ self.addEventListener('push', (event) => {
       { action: 'dismiss', title: 'Dismiss' }
     ]
   };
-  
+
   event.waitUntil(
     self.registration.showNotification(data.title || 'TeleHealth', options)
   );
@@ -163,7 +163,7 @@ self.addEventListener('push', (event) => {
 // Notification click handler
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
+
   if (event.action === 'view') {
     event.waitUntil(
       clients.openWindow('/')

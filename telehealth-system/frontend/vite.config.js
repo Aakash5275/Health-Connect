@@ -9,7 +9,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Rural TeleHealth Access System',
+        name: 'TeleHealth Access System',
         short_name: 'TeleHealth',
         description: 'Remote healthcare access for rural communities',
         theme_color: '#0d9488',

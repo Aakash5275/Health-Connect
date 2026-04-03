@@ -3,8 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth, isDemoFirebase } from '../firebase/firebaseConfig';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  HeartPulse, Menu, X, LogOut, User, 
+import {
+  HeartPulse, Menu, X, LogOut, User,
   Stethoscope, Calendar, FileText, Pill, AlertCircle, Activity
 } from 'lucide-react';
 import { Button } from './ui/Button';
@@ -50,31 +50,31 @@ export default function Navbar({ user, userRole }) {
     { name: 'Emergency', path: '/emergency', icon: AlertCircle, roles: ['patient'] },
   ];
 
-  const visibleLinks = navLinks.filter(link => 
+  const visibleLinks = navLinks.filter(link =>
     link.public || (user && link.roles?.includes(userRole))
   );
 
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
-        scrolled 
-          ? "bg-white/70 backdrop-blur-2xl border-b border-slate-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3" 
+        scrolled
+          ? "bg-white/70 backdrop-blur-2xl border-b border-slate-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3"
           : "bg-transparent py-6"
       )}
     >
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         <div className="flex justify-between items-center">
-          
+
           {/* Logo */}
-          <Link 
-            to={user ? (userRole === 'doctor' ? '/doctor-dashboard' : '/dashboard') : '/home'} 
+          <Link
+            to={user ? (userRole === 'doctor' ? '/doctor-dashboard' : '/dashboard') : '/home'}
             className="flex items-center gap-3 group outline-none"
           >
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
               className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white shadow-lg shadow-primary-500/20 group-hover:shadow-primary-500/40 transition-all duration-500 ease-out"
@@ -82,19 +82,19 @@ export default function Navbar({ user, userRole }) {
               <HeartPulse className="h-6 w-6" strokeWidth={2.5} />
             </motion.div>
             <span className="text-xl tracking-tight font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">
-              Rural TeleHealth
+              TeleHealth
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div 
+          <div
             className="hidden lg:flex items-center relative rounded-full bg-slate-500/5 backdrop-blur-md p-1.5 border border-slate-200/50"
             onMouseLeave={() => setHoveredLink(null)}
           >
             {visibleLinks.map((link) => {
               const isActive = location.pathname.startsWith(link.path);
               const isHovered = hoveredLink === link.path;
-              
+
               return (
                 <Link
                   key={link.name}
@@ -103,12 +103,12 @@ export default function Navbar({ user, userRole }) {
                   className={cn(
                     "relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 z-10",
                     isActive || isHovered
-                      ? "text-slate-900" 
+                      ? "text-slate-900"
                       : "text-slate-500 hover:text-slate-700"
                   )}
                 >
                   <span className="relative z-20 mix-blend-multiply">{link.name}</span>
-                  
+
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
@@ -116,7 +116,7 @@ export default function Navbar({ user, userRole }) {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  
+
                   {isHovered && !isActive && (
                     <motion.div
                       layoutId="hoverTab"
@@ -132,8 +132,40 @@ export default function Navbar({ user, userRole }) {
             })}
           </div>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Desktop Actions Section */}
+          <div className="hidden lg:flex items-center gap-3">
+
+            <div className="relative group">
+              <select
+                defaultValue={
+                  document.cookie.match(/googtrans=\/en\/([^;]+)/)
+                    ? document.cookie.match(/googtrans=\/en\/([^;]+)/)[1]
+                    : 'en'
+                }
+                onChange={(e) => {
+                  const selectedLang = e.target.value;
+                  if (selectedLang === 'en') {
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+                  } else {
+                    document.cookie = `googtrans=/en/${selectedLang}; path=/;`;
+                    document.cookie = `googtrans=/en/${selectedLang}; path=/; domain=${window.location.hostname};`;
+                  }
+                  window.location.reload();
+                }}
+                className="appearance-none bg-white/80 backdrop-blur-md border border-slate-200 text-slate-700 text-xs font-bold py-2 px-4 pr-8 rounded-full cursor-pointer hover:border-primary-500 hover:shadow-sm transition-all outline-none"
+              >
+                <option value="en">🌐 English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="mr">मराठी (Marathi)</option>
+                <option value="ur">اردو (Urdu)</option>
+              </select>
+              {/* Custom Arrow Icon for the Select */}
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              </div>
+            </div>
+
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
                 size="sm"
@@ -144,7 +176,7 @@ export default function Navbar({ user, userRole }) {
                 Join Video Call
               </Button>
             </motion.div>
-            
+
             {user ? (
               <div className="flex items-center gap-3">
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -158,8 +190,8 @@ export default function Navbar({ user, userRole }) {
                   </Link>
                 </motion.div>
                 <div className="h-6 w-px bg-slate-200"></div>
-                <button 
-                  onClick={handleLogout} 
+                <button
+                  onClick={handleLogout}
                   className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors duration-200"
                   aria-label="Logout"
                 >
@@ -172,9 +204,9 @@ export default function Navbar({ user, userRole }) {
                   Patient Login
                 </Link>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Button 
-                    size="sm" 
-                    onClick={() => navigate('/login/doctor')} 
+                  <Button
+                    size="sm"
+                    onClick={() => navigate('/login/doctor')}
                     className="shadow-md shadow-primary-500/20"
                   >
                     Doctor Login
@@ -230,7 +262,7 @@ export default function Navbar({ user, userRole }) {
             className="lg:hidden fixed top-[72px] left-0 right-0 bg-white/95 backdrop-blur-2xl border-t border-slate-200/50 overflow-y-auto z-40"
           >
             <div className="px-6 py-8 space-y-6 flex flex-col min-h-full pb-24">
-              <motion.div 
+              <motion.div
                 className="space-y-2"
                 initial="hidden"
                 animate="visible"
@@ -256,8 +288,8 @@ export default function Navbar({ user, userRole }) {
                         to={link.path}
                         className={cn(
                           "flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 font-medium",
-                          isActive 
-                            ? "bg-primary-50 text-primary-700 shadow-sm border border-primary-100/50" 
+                          isActive
+                            ? "bg-primary-50 text-primary-700 shadow-sm border border-primary-100/50"
                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         )}
                         onClick={() => setIsOpen(false)}
@@ -276,7 +308,7 @@ export default function Navbar({ user, userRole }) {
               </motion.div>
 
               <div className="mt-auto pt-8 border-t border-slate-200/50">
-                <motion.div 
+                <motion.div
                   className="flex flex-col gap-3"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

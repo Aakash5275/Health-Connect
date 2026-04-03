@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, isDemoFirebase } from '../firebase/firebaseConfig';
-import { ensureUserProfile } from '../services/userRoleService';
+import { ensureDoctorProfile } from '../services/userRoleService';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Stethoscope, ArrowRight, Lock, Mail, User as UserIcon } from 'lucide-react';
@@ -60,7 +60,7 @@ export default function DoctorSignup() {
       }
 
       const token = await cred.user.getIdToken();
-      await ensureUserProfile({
+      await ensureDoctorProfile({
         uid: cred.user.uid,
         email: cred.user.email,
         name,

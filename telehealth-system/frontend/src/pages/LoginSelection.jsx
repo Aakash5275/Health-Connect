@@ -23,14 +23,14 @@ export default function LoginSelection() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-100/50 rounded-full blur-[100px] -z-10 translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100/50 rounded-full blur-[80px] -z-10 -translate-x-1/3 translate-y-1/3" />
 
-      <motion.div 
+      <motion.div
         className="max-w-3xl w-full text-center mb-12"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         <span className="inline-block px-3 py-1 bg-white border border-slate-200 rounded-full text-sm font-medium text-slate-600 mb-4 shadow-sm">
-          Welcome to Rural TeleHealth
+          Welcome to TeleHealth
         </span>
         <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Select your portal</h1>
         <p className="text-slate-600 text-lg max-w-lg mx-auto">
@@ -38,15 +38,15 @@ export default function LoginSelection() {
         </p>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         className="grid md:grid-cols-2 gap-6 w-full max-w-4xl"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.div variants={itemVariants}>
-          <Card 
-            hoverEffect 
+          <Card
+            hoverEffect
             className="h-full cursor-pointer flex flex-col items-center text-center p-10 group border-2 border-transparent hover:border-primary-200 transition-all duration-300"
             onClick={() => navigate('/login/patient')}
           >
@@ -79,8 +79,8 @@ export default function LoginSelection() {
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <Card 
-            hoverEffect 
+          <Card
+            hoverEffect
             className="h-full cursor-pointer flex flex-col items-center text-center p-10 group border-2 border-transparent hover:border-slate-300 transition-all duration-300 bg-gradient-to-b from-slate-50 to-white"
             onClick={() => navigate('/login/doctor')}
           >

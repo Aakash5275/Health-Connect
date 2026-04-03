@@ -1,4 +1,4 @@
-# SwasthyaConnect - Rural TeleHealth Access System
+# SwasthyaConnect - TeleHealth Access System
 
 A comprehensive telemedicine platform designed to provide remote healthcare access to rural communities in India.
 

@@ -157,3 +157,32 @@
          flex items-center justify-between z-50 animate-slide-up;
 }
 
+/* 1. Hide the Google Translate Top Banner */
+.goog-te-banner-frame.skiptranslate, 
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* 2. Hide the 'Powered by Google' branding */
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0 !important;
+}
+
+/* 3. Hide the tooltip popups when hovering translated text */
+#goog-gt-tt, .goog-te-balloon-frame {
+  display: none !important;
+}
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+

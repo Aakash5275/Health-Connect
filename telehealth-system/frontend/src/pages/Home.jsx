@@ -127,10 +127,10 @@ export default function Home() {
             <motion.div
               animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className="absolute top-10 right-10 w-80 bg-white/90 backdrop-blur-xl p-4 rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-20"
+              className="absolute top-10 right-10 w-[28rem] bg-white/90 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-20"
             >
               <div className="aspect-video bg-slate-900 rounded-2xl relative overflow-hidden mb-4 shadow-inner">
-                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600&h=400" alt="Doctor Consultation" className="object-cover w-full h-full opacity-80 mix-blend-screen" />
+                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=800&h=600" alt="Doctor Consultation" className="object-cover w-full h-full opacity-80 mix-blend-screen" />
                 <div className="absolute inset-0 bg-blue-500/5 mix-blend-overlay"></div>
                 <div className="absolute top-3 left-3 bg-black/40 backdrop-blur px-2 py-1 rounded-md border border-white/20 flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_#ef4444]" />
@@ -156,7 +156,7 @@ export default function Home() {
             <motion.div
               animate={{ y: [0, 15, 0] }}
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-20 left-4 w-64 bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-30"
+              className="absolute bottom-20 left-4 w-80 bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-30"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function Home() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 0.5 }}
-              className="absolute top-1/2 -right-6 w-48 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-10"
+              className="absolute top-1/2 -right-6 w-64 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 z-10"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-amber-50 rounded-md border border-amber-100"><Pill className="w-4 h-4 text-amber-600" /></div>
@@ -344,7 +344,7 @@ export default function Home() {
 
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary-100/40 to-slate-50/20 z-10 rounded-3xl" />
-              <img src="https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?auto=format&fit=crop&q=80&w=800&h=600" alt="Doctor assisting patient" className="rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-200 aspect-[4/3] object-cover" />
+              <img src="https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?auto=format&fit=crop&q=80&w=1000&h=800" alt="Doctor assisting patient" className="rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-200 aspect-[4/3] object-cover w-full h-full" />
             </div>
           </div>
         </div>
@@ -360,8 +360,8 @@ export default function Home() {
             "SwasthyaConnect completely changed how we handle emergencies. A video consultation with a certified pediatrician saved us an overnight trip to the city hospital."
           </h3>
           <div className="flex items-center justify-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-slate-100 border-2 border-primary-100 overflow-hidden shadow-sm">
-              <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=150&h=150" alt="User" className="transition-all" />
+            <div className="w-24 h-24 rounded-full bg-slate-100 border-2 border-primary-100 overflow-hidden shadow-sm">
+              <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=200&h=200" alt="User" className="transition-all w-full h-full object-cover" />
             </div>
             <div className="text-left">
               <h5 className="font-bold text-slate-900 text-lg">Ramesh Kumar</h5>

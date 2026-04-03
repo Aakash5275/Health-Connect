@@ -1,7 +1,7 @@
 {
   "name": "telehealth-server",
   "version": "1.0.0",
-  "description": "Rural TeleHealth Access System Backend",
+  "description": "TeleHealth Access System Backend",
   "main": "index.js",
   "type": "module",
   "scripts": {
