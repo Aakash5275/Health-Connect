@@ -82,4 +82,10 @@ export const aiAPI = {
 // Health check
 export const healthCheck = () => api.get('/health');
 
+// Payment API calls
+export const paymentAPI = {
+  createOrder: (data) => api.post('/payments/create-order', data),
+  verifyPayment: (data) => api.post('/payments/verify-payment', data)
+};
+
 export default api;

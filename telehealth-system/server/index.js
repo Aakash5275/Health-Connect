@@ -18,6 +18,7 @@ import recordsRouter from './routes/records.js';
 import medicinesRouter from './routes/medicines.js';
 import aiRouter from './routes/ai.js';
 import notificationsRouter from './routes/notifications.js';
+import paymentsRouter from './routes/payments.js';
 
 // Load environment variables
 dotenv.config();
@@ -64,6 +65,7 @@ app.use('/api/records', recordsRouter);
 app.use('/api/medicines', medicinesRouter);
 app.use('/api', aiRouter);
 app.use('/api/notifications', notificationsRouter);
+app.use('/api/payments', paymentsRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

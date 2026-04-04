@@ -21,18 +21,8 @@ export default function Dashboard({ user }) {
   }, []);
 
   const fetchData = async () => {
-    try {
-      const appointmentsRes = await appointmentAPI.getAppointments({ 
-        patientId: user.uid,
-        status: 'scheduled' 
-      });
-      setAppointments(appointmentsRes.data.slice(0, 3));
-
-      const tipsRes = await aiAPI.getHealthTips();
-      setHealthTip(tipsRes.data.dailyTip);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      // Use room-1, room-2, room-3 to match DoctorDashboard appointments so both join same Jitsi room
+    // Bypassing Firebase/API calls as requested to prevent 10000ms timeout
+    setTimeout(() => {
       setAppointments([
         {
           id: '1',
@@ -45,9 +35,8 @@ export default function Dashboard({ user }) {
         }
       ]);
       setHealthTip('Drink at least 8 glasses of water daily to maintain optimal hydration.');
-    } finally {
       setLoading(false);
-    }
+    }, 500);
   };
 
   const quickActions = [

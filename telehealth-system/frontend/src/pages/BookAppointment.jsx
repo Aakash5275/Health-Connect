@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userAPI, appointmentAPI } from '../services/api';
+import { userAPI, appointmentAPI, paymentAPI } from '../services/api';
 import { motion } from 'framer-motion';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -63,7 +63,12 @@ export default function BookAppointment({ user }) {
     setError('');
 
     try {
-      await appointmentAPI.createAppointment({
+      // 1. Create Order
+      const orderResponse = await paymentAPI.createOrder({ amount: 500 });
+      const { order_id, amount, currency } = orderResponse.data;
+
+      // Appointment payload to securely process later
+      const appointmentData = {
         patientId: user?.uid || 'demo-user',
         doctorId: selectedDoctor.id,
         doctorName: selectedDoctor.name,
@@ -71,15 +76,65 @@ export default function BookAppointment({ user }) {
         time,
         type,
         notes
+      };
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'your_razorpay_key_id', // Add public key to frontend .env if needed, but the user requested environment variables for node server. So fallback here or expect VITE_RAZORPAY_KEY_ID
+        amount,
+        currency,
+        name: 'SwasthyaConnect',
+        description: 'Doctor Consultation Fee',
+        order_id,
+        handler: async function (response) {
+          try {
+            // 2. Verify Payment
+            const verifyRes = await paymentAPI.verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              appointmentData
+            });
+
+            if (verifyRes.data.success) {
+              setSuccess(true);
+              setTimeout(() => navigate('/dashboard'), 2500);
+            } else {
+              setError('Payment verification failed.');
+              setSubmitting(false);
+            }
+          } catch (verifyErr) {
+            console.error('Verification Error:', verifyErr);
+            setError('Payment verification error. Please contact support.');
+            setSubmitting(false);
+          }
+        },
+        prefill: {
+          name: user?.displayName || 'Patient',
+          email: user?.email || 'patient@example.com',
+          contact: '9999999999'
+        },
+        theme: {
+          color: '#2563eb' // Matches Tailwind Blue-600
+        },
+        modal: {
+          ondismiss: function () {
+            setSubmitting(false);
+          }
+        }
+      };
+
+      const razorpay = new window.Razorpay(options);
+      
+      razorpay.on('payment.failed', function (response){
+        setError(`Payment failed! Reason: ${response.error.description}`);
+        setSubmitting(false);
       });
-      setSuccess(true);
-      setTimeout(() => navigate('/dashboard'), 2500);
+      
+      razorpay.open();
+
     } catch (err) {
-      console.error('Error booking appointment:', err);
-      // Demo mode success
-      setSuccess(true);
-      setTimeout(() => navigate('/dashboard'), 2500);
-    } finally {
+      console.error('Error initiating payment:', err);
+      setError('Could not initialize payment. Please try again later.');
       setSubmitting(false);
     }
   };
